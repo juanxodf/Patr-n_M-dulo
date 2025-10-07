@@ -1,7 +1,5 @@
 import './style.css'
-import javascriptLogo from './javascript.svg'
 import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
 import * as TaskManager from './TaskManager.js'
 
 document.querySelector('#app').innerHTML = `
@@ -26,52 +24,54 @@ document.querySelector('#app').innerHTML = `
 
 // referencias
 const taskInput = document.getElementById("taskInput")
-const addBtn = document.getElementById("addBtn")
+const addButton = document.getElementById("addBtn")
 const taskList = document.getElementById("taskList")
 
-function renderTasks() {
-  taskList.innerHTML = ""
-  TaskManager.listaTareas.forEach((task, index) => {
-    const li = document.createElement("li")
-    li.className = "flex justify-between items-center bg-white p-2 rounded shadow"
+function showTasks() {
+    taskList.innerHTML = ""
+    TaskManager.listaTareas.forEach((task, index) => {
+        const li = document.createElement("li")
+        li.className = "flex justify-between items-center bg-white p-2 rounded shadow"
 
-    li.innerHTML = `
+        li.innerHTML = `
       <span class="${task.completado ? 'line-through text-gray-400' : ''}">
         ${task.text}
       </span>
       <div class="flex gap-2">
-        <button class="completeBtn bg-green-500 text-white px-2 py-1 rounded">✔</button>
-        <button class="deleteBtn bg-red-500 text-white px-2 py-1 rounded">🗑️</button>
+        <button class="completeButton ${task.completado ? "check" : ""}"> ${task.completado ? "Completado" : "Completar"}</button>
+        <button class="deleteButton">Eliminar</button>
       </div>
     `
 
-    // completar
-    li.querySelector(".completeBtn").addEventListener("click", () => {
-      TaskManager.completaTasks(index)
-      renderTasks()
-    })
+        let buttonCompletar = li.querySelector(".completeButton")
 
-    // eliminar
-    li.querySelector(".deleteBtn").addEventListener("click", () => {
-      TaskManager.eliminarTask(index)
-      renderTasks()
-    })
+        // completar
+        buttonCompletar.addEventListener("click", () => {
+            TaskManager.completaTasks(index)
+            showTasks()
+        })
 
-    taskList.appendChild(li)
-  })
+        // eliminar
+        li.querySelector(".deleteButton").addEventListener("click", () => {
+            TaskManager.eliminarTask(index)
+            showTasks()
+        })
+
+        taskList.appendChild(li)
+    })
 }
 
 // evento para agregar tarea
-addBtn.addEventListener("click", () => {
-  const tarea = taskInput.value.trim()
-  if (tarea) {
-    TaskManager.agregarTask(tarea)
-    taskInput.value = ""
-    renderTasks()
-  }
+addButton.addEventListener("click", () => {
+    const tarea = taskInput.value.trim()
+    if (tarea) {
+        TaskManager.agregarTask(tarea)
+        taskInput.value = ""
+        showTasks()
+    }
 })
 
-// render inicial
-renderTasks()
+// llamada inicial
+showTasks()
 
 

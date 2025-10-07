@@ -94,3 +94,20 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+li{
+    padding: 10px;
+}
+
+.completeButton{
+    background-color: rgb(190, 236, 247);
+}
+
+.deleteButton{
+    background-color: rgb(247, 150, 150);
+}
+
+.check{
+    background-color: rgb(98, 234, 98);
+    color: white 2px; 
+}
